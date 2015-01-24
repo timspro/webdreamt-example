@@ -7,20 +7,16 @@ class CustomBox extends Box {
 		parent::__construct();
 		$this->DatabaseUsername = 'root';
 		$this->DatabasePassword = '';
-		$this->DatabaseName = 'blog';
+		$this->DatabaseName = 'webdreamt_blog';
 		$this->DatabaseHost = 'localhost';
 	}
 
-	function header($css = true, $title = '', $custom = null) {
-		parent::header($css, $title, $custom);
-	}
-
 	function javascript() {
-		return '<script src="' . $this->root() . '/dist/client/webdreamt-build.js"></script>';
+		return '<script src="' . $this->root() . '/dist/client/build.js"></script>';
 	}
 
 	function css() {
-		return '<link href="' . $this->root() . '/dist/client/webdreamt-build.min.css" rel="stylesheet">';
+		return '<link href="' . $this->root() . '/dist/client/build.min.css" rel="stylesheet">';
 	}
 
 }
