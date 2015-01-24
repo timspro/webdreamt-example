@@ -1,0 +1,29 @@
+{
+	"name": "vendor/webdreamt-example",
+	"description": "An example project for WebDreamt",
+	"minimum-stability": "dev",
+	"authors": [
+		{
+			"name": "Tim Sprowl",
+			"email": "tim.spr@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-0": {
+			"": [
+				"src/",
+				"db/propel/generated-classes/",
+				"db/classes/"
+			]
+		}
+	},
+	"require": {
+		"timspro/webdreamt": "dev-master"
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "git@bitbucket.org:timspro/webdreamt.git"
+		}
+	]
+}

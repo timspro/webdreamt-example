@@ -1,0 +1,30 @@
+{
+	"name": "webdreamt-example",
+	"authors": [
+		"Tim Sprowl <tim.spr@gmail.com>"
+	],
+	"version": "0.0.1",
+	"dependencies": {
+		"webdreamt": "git@bitbucket.org:timspro/webdreamt.git"
+	},
+	"install": {
+		"base": "build",
+		"path": {
+			"css": "css",
+			"less": "less",
+			"gif": "img",
+			"jpeg": "img",
+			"jpg": "img",
+			"bmp": "img",
+			"png": "img",
+			"tff": "img",
+			"tiff": "img",
+			"js": "js",
+			"eot": "fonts",
+			"svg": "fonts",
+			"ttf": "fonts",
+			"woff": "fonts"
+		}
+	},
+	"private": true
+}
