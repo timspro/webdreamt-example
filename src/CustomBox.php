@@ -15,4 +15,12 @@ class CustomBox extends Box {
 		parent::header($css, $title, $custom);
 	}
 
+	function javascript() {
+		return '<script src="' . $this->root() . '/dist/client/webdreamt-build.js"></script>';
+	}
+
+	function css() {
+		return '<link href="' . $this->root() . '/dist/client/webdreamt-build.min.css" rel="stylesheet">';
+	}
+
 }
