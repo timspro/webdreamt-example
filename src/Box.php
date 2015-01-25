@@ -1,7 +1,6 @@
 <?php
-use WebDreamt\Box;
 
-class CustomBox extends Box {
+class Box extends \WebDreamt\Box {
 
 	function __construct() {
 		parent::__construct();
@@ -9,6 +8,7 @@ class CustomBox extends Box {
 		$this->DatabasePassword = '';
 		$this->DatabaseName = 'webdreamt_blog';
 		$this->DatabaseHost = 'localhost';
+		$this->enable();
 	}
 
 	function javascript() {

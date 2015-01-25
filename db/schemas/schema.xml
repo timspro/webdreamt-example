@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="comment" idMethod="native" phpName="Comment">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="20" required="true"/>
+    <column name="comment" phpName="Comment" type="VARCHAR" size="255" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
   <table name="groups" idMethod="native" phpName="Groups">
     <column name="id" phpName="Id" type="INTEGER" size="10" sqlType="int(10) unsigned" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
@@ -13,6 +21,67 @@
   <table name="migrations" idMethod="native" phpName="Migrations">
     <column name="migration" phpName="Migration" type="VARCHAR" size="255" required="true"/>
     <column name="batch" phpName="Batch" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="post" idMethod="native" phpName="Post">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="users_id" phpName="UsersId" type="INTEGER" size="10" sqlType="int(10) unsigned" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="100" required="true"/>
+    <column name="html" phpName="Html" type="LONGVARCHAR" required="true"/>
+    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
+    <foreign-key foreignTable="users" name="post_ibfk_1">
+      <reference local="users_id" foreign="id"/>
+    </foreign-key>
+    <index name="users_id">
+      <index-column name="users_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="post_comment" idMethod="native" phpName="PostComment">
+    <column name="post_id" phpName="PostId" type="INTEGER" required="true"/>
+    <column name="comment_id" phpName="CommentId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="post" name="post_comment_ibfk_1">
+      <reference local="post_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="comment" name="post_comment_ibfk_2">
+      <reference local="comment_id" foreign="id"/>
+    </foreign-key>
+    <index name="post_id">
+      <index-column name="post_id"/>
+    </index>
+    <index name="comment_id">
+      <index-column name="comment_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="post_tag" idMethod="native" phpName="PostTag">
+    <column name="post_id" phpName="PostId" type="INTEGER" required="true"/>
+    <column name="tag_id" phpName="TagId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="post" name="post_tag_ibfk_1">
+      <reference local="post_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="tag" name="post_tag_ibfk_2">
+      <reference local="tag_id" foreign="id"/>
+    </foreign-key>
+    <index name="post_id">
+      <index-column name="post_id"/>
+    </index>
+    <index name="tag_id">
+      <index-column name="tag_id"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tag" idMethod="native" phpName="Tag">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="name" phpName="Name" type="VARCHAR" size="20" required="true"/>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

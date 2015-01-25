@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 			do: {
 				files: {
 					'dist/client/build.min.css': ['css/bootstrap.css', 'css/bootstrap-datetime.css',
-						'css/select2.css', 'css/select2-bootstrap.css', 'css/webdreamt.css']
+						'css/select2.css', 'css/select2-bootstrap.css', 'css/*.css']
 				}
 			}
 		},

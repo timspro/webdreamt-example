@@ -1,8 +1,6 @@
 /build/
-/css/
 /fonts/
 /img/
-/js/
 /less/
 /node_modules/
 /vendor/
@@ -10,3 +8,7 @@
 /nbproject/
 /db/propel/
 /db/old/
+js
+!js/blog.js
+css
+!css/blog.css
