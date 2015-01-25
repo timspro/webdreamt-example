@@ -1,0 +1,84 @@
+.sidebar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	background-color: #333;
+	min-height: 100%;
+	max-height: 100%;
+	padding: 50px;
+	color: white;
+}
+
+.content {
+	background-color: #eee;
+	min-height: 100%;
+	padding: 50px;
+}
+
+html > body {
+	padding: 0;
+	font-size: 1.8em;
+}
+
+html, body {
+	height: 100%;
+}
+
+.post-title {
+	font-size: 3.5em;
+	text-align: center;
+	font-family: arial;
+}
+
+.post-created_at {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.sidebar h3 {
+	border-bottom: 1px solid white;
+	padding-bottom: 5px;
+}
+
+.sidebar .brand {
+	border-bottom: 0;
+	text-align: center;
+	font-size: 2.5em;
+}
+
+.sidebar a {
+	color: #ddd;
+}
+
+.comment {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.comment table {
+	width: 100%;
+}
+
+.comment-name  {
+	width: 15%;
+	text-align: center;
+	display: inline-block;
+	background-color: #eee;
+	border-radius: 5px 0 0 5px;
+	border-right: 1px solid #ddd;
+	padding: 10px 0;
+}
+
+.comment-comment {
+	display: inline-block;
+	padding: 10px 20px;
+}
+
+.padding {
+	padding: 10px;
+}
+
+.post {
+	position: relative;
+}

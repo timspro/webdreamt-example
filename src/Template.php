@@ -55,6 +55,10 @@ class Template extends Page {
 
 		$content = new Wrapper(null, 'div', 'content col-md-9 col-md-offset-3');
 
+		if (count($_POST) !== 0) {
+			Box::get()->server()->batch($_POST);
+		}
+
 		$this->content = $content;
 		$this->sidebar = $sidebar;
 		parent::__construct($content, 'WebDreamt Blog');

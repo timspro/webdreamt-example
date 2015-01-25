@@ -9,10 +9,6 @@ if (!Box::get()->sentry()->getUser()) {
 	return;
 }
 
-if (count($_POST) !== 0) {
-	Box::get()->server()->batch($_POST);
-}
-
 $tags = new Form('post_tag');
 $tags->setMultiple(true)->link('tag_id', new Form('tag'));
 
@@ -22,5 +18,6 @@ $form->link('tags', $tags, 'post_id');
 
 $page = new Template();
 $panel = new Panel($form);
+$panel->setTitle('New Post');
 $page->content->setDisplayComponent($panel);
 echo $page->render();

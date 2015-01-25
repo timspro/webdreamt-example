@@ -8,7 +8,7 @@
 /nbproject/
 /db/propel/
 /db/old/
-js
+js/*
 !js/blog.js
-css
+css/*
 !css/blog.css
