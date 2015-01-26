@@ -21,7 +21,9 @@ class Template extends Page {
 	public $content;
 
 	function __construct() {
-		$posts = PostQuery::create()->orderByCreatedAt(Criteria::DESC)->find();
+		$tags = TagQuery::create()->leftJoin('Tag.PostTag')->with('PostTag')
+						->leftJoin('PostTag.Post')->with('Post')
+						->orderBy('Post.CreatedAt', Criteria::DESC)->find();
 
 		$actions = new Custom(function() {
 			if (Box::get()->sentry()->getUser()) {
@@ -39,16 +41,23 @@ class Template extends Page {
 			}
 		}, true);
 
-		$data = new Data('post', null, "div", 'title');
-		$data->deny()->allow('title');
-		$data->getDisplayComponent()->setHtmlTag('a')->setHtmlCallback(function($title) {
+		$dataPost = new Data('post', null, "div", 'title');
+		$dataPost->deny()->allow('title');
+		$dataPost->getDisplayComponent()->setHtmlTag('a')->setHtmlCallback(function($title) {
 			$title = str_replace(' ', '-', $title);
 			return "href='index.php?title=$title'";
 		});
-		$group = new Group($data);
-		$group->setInput($posts);
-		$group->setAfterOpeningTag('<h3>Posts</h3>');
-		$sidebar = new Wrapper($group, 'div', 'sidebar col-md-3');
+
+		$dataPostTag = new Data('post_tag');
+		$dataPostTag->link('post_id', $dataPost);
+
+		$dataTag = new Data('tag');
+		$dataTag->addExtraColumn('extra')->link('extra', new Group($dataPostTag), 'tag_id');
+		$groupTag = new Group($dataTag);
+		$groupTag->setAfterOpeningTag('<h3>Posts</h3>');
+		$groupTag->setInput($tags);
+
+		$sidebar = new Wrapper($groupTag, 'div', 'sidebar col-md-3');
 		$sidebar->addExtraComponent($actions, false);
 		$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'Blog'), false);
 		$this->addExtraComponent($sidebar, false);

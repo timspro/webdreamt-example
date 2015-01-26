@@ -2,21 +2,17 @@
 	var newId = null;
 	function fixForm($form, map) {
 		//get ID
-		var oldId = $form.children('.wd-form-id')[0].name;
+		var formId = $form.children('.wd-form-id')[0];
+		var oldId = formId.name;
 		if (newId === null) {
 			newId = 10000;
-			while ($('.wd-form[name="' + newId + '"]').length !== 0) {
+			while ($('.wd-form > [name="' + newId + '"]').length !== 0) {
 				newId += 10000;
 			}
 		}
+		formId.name = newId;
 		map[oldId] = newId;
 
-		var $children = $form.children("[name='" + oldId + ":*']");
-		//inputs
-		$.each($children, function (index, el) {
-			var parts = el.name.split(":");
-			el.name = map[oldId] + ":" + parts[1];
-		});
 		//form relations
 		var $relations = $form.children(".wd-form-relation");
 		$.each($relations, function (index, el) {
@@ -35,16 +31,36 @@
 			}
 			el.name = newName;
 		});
+		//inputs
+		var $children = $form.children().children().filter("[name^='" + oldId + ":']");
+		$.each($children, function (index, el) {
+			var parts = el.name.split(":");
+			el.name = map[oldId] + ":" + parts[1];
+		});
+		//for
+		var $children = $form.children().children().filter("[for^='" + oldId + ":']");
+		$.each($children, function (index, el) {
+			var parts = el.getAttribute('for').split(":");
+			el.setAttribute('for', map[oldId] + ":" + parts[1]);
+		});
 		//subforms
-		var $subforms = $form.childen(".wd-subform");
+		var $subforms = $form.children(".wd-subform");
 		$.each($subforms, function (index, el) {
+			newId++;
 			fixForm($(el), map);
 		});
 	}
 
-	$(document).on('.wd-multiple', 'click', function (e) {
+	$(document).on('click', '.wd-multiple', function (e) {
 		var $target = $(e.target);
 		var $form = $target.parent();
-		fixForm($form, {});
+		var $newForm = $form.clone(true);
+		$newForm.insertAfter($form);
+		fixForm($newForm, {});
+		$target.remove();
+	});
+
+	$(document).on('click', '.wd-form-submit', function (e) {
+		$(e.target).parents('form')[0].submit();
 	});
 })();

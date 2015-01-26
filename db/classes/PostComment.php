@@ -1,6 +1,6 @@
 <?php
-
 use Base\PostComment as BasePostComment;
+use Propel\Runtime\Connection\ConnectionInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'post_comment' table.
@@ -12,7 +12,16 @@ use Base\PostComment as BasePostComment;
  * long as it does not already exist in the output directory.
  *
  */
-class PostComment extends BasePostComment
-{
+class PostComment extends BasePostComment {
+
+	function preInsert(ConnectionInterface $con = null) {
+		if (!Box::get()->sentry()->getUser()) {
+			if (($this->getPost()->getCreatedAt()->getTimestamp() - time()) / 3600 > 24) {
+				return false;
+			}
+		}
+
+		return parent::preInsert($con);
+	}
 
 }
