@@ -12309,7 +12309,59 @@ return jQuery;
 	});
 
 	$(document).on('click', '.wd-form-submit', function (e) {
-		$(e.target).parents('form')[0].submit();
+		var form = $(e.target).parents('form')[0];
+		if (!form.hasAttribute('method')) {
+			form.setAttribute('method', 'POST');
+		}
+		form.submit();
+	});
+
+	function enable($switch, $other) {
+		if ($switch.val() === '') {
+			$other.removeAttr('disabled');
+		} else {
+			$other.attr('disabled', '');
+		}
+	}
+
+	$(document).on('change', '.wd-is-select', function (e) {
+		var $target = $(e.target);
+		var $other = $target.parent().parent().find('.wd-is-input');
+		enable($target, $other);
+	});
+
+	$(document).on('change', '.wd-is-input', function (e) {
+		var $target = $(e.target);
+		var $other = $target.parent().parent().find('.wd-is-select');
+		enable($target, $other);
+	});
+
+	$(document).on('click', '.wd-modal-submit', function (e) {
+		var form = $(e.target).parent().siblings('.modal-body').find('form')[0];
+		if (!form.hasAttribute('method')) {
+			form.setAttribute('method', 'POST');
+		}
+		if (!form.hasAttribute('action')) {
+			form.setAttribute('action', '?');
+		}
+		form.submit();
+	});
+
+	$('.wd-is-input, .wd-is-select').trigger('change');
+
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+		var results = regex.exec(location.search);
+		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	$(window).load(function (e) {
+		$('.wd-modal-show').modal('show');
+		if (getParameterByName('action') === 'delete') {
+			var url = window.location.toString();
+			window.location = url.substring(0, url.indexOf("?"));
+		}
 	});
 })();;/*
  //! version : 4.0.0

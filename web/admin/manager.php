@@ -1,10 +1,9 @@
 <?php
 require_once __DIR__ . '/../../bootstrap.php';
+use WebDreamt\Component;
 
-if (!Box::get()->sentry()->getUser()) {
-	echo 'Who are you?';
-	return;
-}
-
-umask(0);
-Box::get()->script()->manager();
+$page = new Template();
+$page->content->setDisplayComponent(new Component('iframe', 'iframe-fill', 'src="script/manager.php" '
+		. 'frameBorder="0"'));
+$page->content->appendHtml('style="padding:0"');
+echo $page->render();

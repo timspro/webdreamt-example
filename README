@@ -1,1 +1,9 @@
-This is an example WebDreamt project.
+This is an example of WebDreamt project.
+
+To install, just drop the project in your web root and run Composer to install the dependencies.
+
+Then, navigate to localhost/webdreamt-example/admin/setup.php in your browser. This creates the first
+user and the default group and the admin group.
+
+Now, you should able to login at localhost/webdreamt-example/login.php with email "admin@admin.com" and
+password "password" (no quotes).

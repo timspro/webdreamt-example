@@ -2,10 +2,12 @@
 use Propel\Runtime\ActiveQuery\Criteria;
 use WebDreamt\Component;
 use WebDreamt\Component\Custom;
+use WebDreamt\Component\Icon;
 use WebDreamt\Component\Wrapper;
 use WebDreamt\Component\Wrapper\Data;
 use WebDreamt\Component\Wrapper\Group;
 use WebDreamt\Component\Wrapper\Page;
+use WebDreamt\Store;
 
 class Template extends Page {
 
@@ -21,52 +23,96 @@ class Template extends Page {
 	public $content;
 
 	function __construct() {
-		$tags = TagQuery::create()->leftJoin('Tag.PostTag')->with('PostTag')
-						->leftJoin('PostTag.Post')->with('Post')
-						->orderBy('Post.CreatedAt', Criteria::DESC)->find();
+		Box::get()->server()->automate();
 
-		$actions = new Custom(function() {
-			if (Box::get()->sentry()->getUser()) {
+		$root = Box::get()->root();
+
+		//Make a store to help organize things.
+		$store = new Store();
+
+		$store->set('data', function() {
+			//Get data from database.
+			$data = TagQuery::create()->leftJoin('Tag.PostTag')->with('PostTag')
+							->leftJoin('PostTag.Post')->with('Post')
+							->orderBy('Post.CreatedAt', Criteria::DESC)->find();
+			return $data;
+		});
+
+		//Start making components.
+		//Set up the general layout of the sidebar.
+		$store->set('sidebar', function() use ($store) {
+			$sidebar = new Wrapper($store->get('tags'), 'div', 'sidebar col-md-3');
+			$sidebar->addExtraComponent($store->get('actions'), false);
+			$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'Blog'), false);
+			return $sidebar;
+		});
+
+		//Set up the component for links to admin areas.
+		$store->set('actions', function() use ($root) {
+			$actions = new Custom(function() use ($root) {
 				ob_start();
 				?>
 				<div class="actions">
-					<div><a href="admin/manager.php">Manager</a></div>
-					<div><a href="admin/authorization.php">Authorization</a></div>
-					<div><a href="index.php">Posts</a></div>
-					<div><a href="create.php">Create</a></div>
-					<div><a href="logout.php">Logout</a></div>
+					<div><a href="<?= $root ?>/admin/adminer.php">Adminer</a></div>
+					<div><a href="<?= $root ?>/admin/manager.php">Manager</a></div>
+					<div><a href="<?= $root ?>/admin/authorization.php">Authorization</a></div>
+					<div><a href="<?= $root ?>/admin/create.php">Create</a></div>
+					<div><a href="<?= $root ?>/index.php">Main</a></div>
+					<div><a href="<?= $root ?>/logout.php">Logout</a></div>
 				</div>
 				<?php
 				return ob_get_clean();
-			}
-		}, true);
-
-		$dataPost = new Data('post', null, "div", 'title');
-		$dataPost->deny()->allow('title');
-		$dataPost->getDisplayComponent()->setHtmlTag('a')->setHtmlCallback(function($title) {
-			$title = str_replace(' ', '-', $title);
-			return "href='index.php?title=$title'";
+			}, true);
+			$actions->setGroups('admin');
+			return $actions;
 		});
 
-		$dataPostTag = new Data('post_tag');
-		$dataPostTag->link('post_id', $dataPost);
+		//Set up the list of tags.
+		$store->set('tags', function() use ($store) {
+			$tag = new Data('tag');
+			$tag->setDataClass('tag');
+			$tag->addExtraColumn('extra')->link('extra', new Group($store->get('post_tag')), 'tag_id');
 
-		$dataTag = new Data('tag');
-		$dataTag->addExtraColumn('extra')->link('extra', new Group($dataPostTag), 'tag_id');
-		$groupTag = new Group($dataTag);
-		$groupTag->setAfterOpeningTag('<h3>Posts</h3>');
-		$groupTag->setInput($tags);
+			$icon = new Icon(Icon::TYPE_DELETE);
+			$icon->setGroups('admin');
+			$tag->addIcon($icon, '');
 
-		$sidebar = new Wrapper($groupTag, 'div', 'sidebar col-md-3');
-		$sidebar->addExtraComponent($actions, false);
-		$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'Blog'), false);
-		$this->addExtraComponent($sidebar, false);
+			$icon = new Icon(Icon::TYPE_EDIT);
+			$icon->setGroups('admin');
+			$tag->addIcon($icon, '');
+
+			$tags = new Group($tag);
+			$tags->setAfterOpeningTag('<h3>Posts</h3>');
+			$tags->setInput($store->get('data'));
+			return $tags;
+		});
+
+		//Set up the post tag component that links to posts.
+		$store->set('post_tag', function() use ($store) {
+			$postTag = new Data('post_tag');
+			$postTag->link('post_id', $store->get('post'));
+			$icon = new Icon(Icon::TYPE_DELETE);
+			$icon->setGroups('admin');
+			$postTag->addIcon($icon, '');
+			return $postTag;
+		});
+
+		//Set up the post component that links via page titles to blog posts.
+		$store->set('post', function() use ($root) {
+			$post = new Data('post', null, "div", 'title');
+			$post->deny()->allow('title');
+			$post->getDisplayComponent()->setHtmlTag('a')->setHtmlCallback(function($title) use ($root) {
+				$title = str_replace(' ', '-', $title);
+				return "href='$root/index.php?title=$title'";
+			});
+
+			return $post;
+		});
+
+		$sidebar = $store->get('sidebar');
 
 		$content = new Wrapper(null, 'div', 'content col-md-9 col-md-offset-3');
-
-		if (count($_POST) !== 0) {
-			Box::get()->server()->batch($_POST);
-		}
+		$this->addExtraComponent($sidebar, false);
 
 		$this->content = $content;
 		$this->sidebar = $sidebar;

@@ -18,7 +18,7 @@ if (isset($_POST['1:email']) && isset($_POST['1:password'])) {
 	}
 
 	if ($error === '') {
-		$sentry->login($user);
+		$sentry->login($user, true);
 	}
 }
 
@@ -33,7 +33,10 @@ $form->deny()->allow('email', 'password')->setHtmlType([
 	'email' => Form::HTML_TEXT,
 	'password' => Form::HTML_PASSWORD
 ]);
+
 $panel = new Panel($form, null, 'style="margin:50px"');
 $panel->setTitle('Login');
-$page = new Page($panel, 'Login');
+
+$page = new Template();
+$page->content->setDisplayComponent($panel);
 echo $page->render();

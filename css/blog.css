@@ -17,7 +17,7 @@
 
 html > body {
 	padding: 0;
-	font-size: 1.8em;
+	font-size: 1.6em;
 }
 
 html, body {
@@ -68,9 +68,14 @@ html, body {
 	border-radius: 5px 0 0 5px;
 	border-right: 1px solid #ddd;
 	padding: 10px 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
 }
 
 .comment-comment {
+	position: relative;
+	left: 15%;
 	display: inline-block;
 	padding: 10px 20px;
 }
@@ -81,4 +86,26 @@ html, body {
 
 .post {
 	position: relative;
+}
+
+.tag-name {
+	font-weight: bold;
+}
+.wd-icon {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.wd-icon .glyphicon {
+	margin: 2px;
+}
+
+.wd-relative {
+	position: relative;
+}
+
+.iframe-fill {
+	width: 100%;
+	height: 100%;
 }
