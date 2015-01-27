@@ -42,6 +42,7 @@ class Template extends Page {
 		//Set up the general layout of the sidebar.
 		$store->set('sidebar', function() use ($store) {
 			$sidebar = new Wrapper($store->get('tags'), 'div', 'sidebar col-md-3');
+			$sidebar->addExtraComponent($store->get('untagged_posts'));
 			$sidebar->addExtraComponent($store->get('actions'), false);
 			$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'Blog'), false);
 			return $sidebar;
@@ -107,6 +108,20 @@ class Template extends Page {
 			});
 
 			return $post;
+		});
+
+		$store->set('untagged_posts', function() use($store) {
+			$data = PostQuery::create()->usePostTagQuery(null, 'left join')->filterByTagId(null)
+							->endUse()->orderBy('Post.CreatedAt', Criteria::DESC)->find();
+			$group = new Group($store->get('post'));
+			$group->setInput($data);
+			$group->addExtraComponent(new Custom(function($input) {
+				if (count($input) !== 0) {
+					return 'Unknown';
+				}
+				return '';
+			}, true), false);
+			return $group;
 		});
 
 		$sidebar = $store->get('sidebar');

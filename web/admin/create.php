@@ -27,7 +27,7 @@ $multiplePostTag->setMultiple(true)->setInput([]);
 
 //Create the post.
 $post = new Form('post', null, 'method="POST"');
-$postTags->addExtraComponent($post->getLabelComponent());
+$postTags->addExtraComponent($post->getLabelComponent(), false);
 $post->setLabels(['html' => 'Content'])->setHtmlClass(['html' => 'ckeditor']);
 $post->deny('users_id')->addExtraColumn('tags')->link('tags', $postTags, 'post_id');
 $post->addExtraColumn('add_tag')->link('add_tag', $multiplePostTag, 'post_id');

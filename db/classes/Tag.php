@@ -1,5 +1,6 @@
 <?php
 use Base\Tag as BaseTag;
+use Propel\Runtime\Connection\ConnectionInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'tag' table.
@@ -12,5 +13,12 @@ use Base\Tag as BaseTag;
  *
  */
 class Tag extends BaseTag {
+
+	function preInsert(ConnectionInterface $con = null) {
+		if ($this->getName() === '') {
+			return false;
+		}
+		return parent::preInsert($con);
+	}
 
 }

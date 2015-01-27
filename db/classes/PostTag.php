@@ -1,6 +1,6 @@
 <?php
-
 use Base\PostTag as BasePostTag;
+use Propel\Runtime\Connection\ConnectionInterface;
 
 /**
  * Skeleton subclass for representing a row from the 'post_tag' table.
@@ -12,7 +12,14 @@ use Base\PostTag as BasePostTag;
  * long as it does not already exist in the output directory.
  *
  */
-class PostTag extends BasePostTag
-{
+class PostTag extends BasePostTag {
+
+	function preInsert(ConnectionInterface $con = null) {
+		$tag = $this->getTag();
+		if ($tag === null || $tag->getName() === '') {
+			return false;
+		}
+		return parent::preInsert($con);
+	}
 
 }

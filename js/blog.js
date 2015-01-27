@@ -1,6 +1,8 @@
 (function () {
 	$(window).load(function () {
 		CKEDITOR.config.extraPlugins = "base64image";
-		CKEDITOR.replace('.ckeditor');
+		if ($('.ckeditor').length > 0) {
+			CKEDITOR.replace('.ckeditor');
+		}
 	});
 })();
