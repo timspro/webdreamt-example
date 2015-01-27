@@ -91,19 +91,6 @@ html, body {
 .tag-name {
 	font-weight: bold;
 }
-.wd-icon {
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-.wd-icon .glyphicon {
-	margin: 2px;
-}
-
-.wd-relative {
-	position: relative;
-}
 
 .iframe-fill {
 	width: 100%;
