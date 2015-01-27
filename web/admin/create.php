@@ -19,14 +19,18 @@ $names = Box::get()->db()->query('SELECT id, name FROM tag')->fetchAll(PDO::FETC
 $tag = new InputSelect('tag', 'name', $names);
 $tag->setLabelable(false);
 $postTag = new Form('post_tag');
-$postTag->setMultiple(true)->link('tag_id', $tag);
+$postTag->link('tag_id', $tag);
 $postTags = new Group($postTag);
+
+$multiplePostTag = clone $postTag;
+$multiplePostTag->setMultiple(true)->setInput([]);
 
 //Create the post.
 $post = new Form('post', null, 'method="POST"');
-$post->setLabels(['html' => 'HTML']);
-$post->deny('users_id')->addExtraColumn('tags')->link('tags', $post->getLabelComponent());
-$post->link('tags', $postTags, 'post_id');
+$postTags->addExtraComponent($post->getLabelComponent());
+$post->setLabels(['html' => 'Content'])->setHtmlClass(['html' => 'ckeditor']);
+$post->deny('users_id')->addExtraColumn('tags')->link('tags', $postTags, 'post_id');
+$post->addExtraColumn('add_tag')->link('add_tag', $multiplePostTag, 'post_id');
 
 $panel = new Panel($post);
 $panel->setTitle('New Post');

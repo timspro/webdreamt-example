@@ -12,7 +12,9 @@ class Box extends \WebDreamt\Box {
 	}
 
 	function javascript() {
-		return '<script src="' . $this->root() . '/dist/client/build.js"></script>';
+		$js = '<script src="' . $this->root() . '/dist/ckeditor/ckeditor.js"></script>' .
+				'<script src="' . $this->root() . '/dist/client/build.js"></script>';
+		return $js;
 	}
 
 	function css() {

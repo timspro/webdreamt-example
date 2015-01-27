@@ -12,3 +12,4 @@ js/*
 !js/blog.js
 css/*
 !css/blog.css
+/bower_components/
