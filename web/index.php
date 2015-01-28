@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../bootstrap.php';
 use Propel\Runtime\ActiveQuery\Criteria;
+use WebDreamt\Component\Custom;
 use WebDreamt\Component\Icon;
-use WebDreamt\Component\Wrapper;
 use WebDreamt\Component\Wrapper\Data;
 use WebDreamt\Component\Wrapper\Data\Form;
 use WebDreamt\Component\Wrapper\Group;
@@ -57,7 +57,7 @@ $store->set('form_post_comment', function() {
 $store->set('post', function() use ($store, $root) {
 	$post = new Data('post', null, 'div', 'post');
 	$post->setDataClass('post')->hide('users_id')->setDateTimeFormat('n/d/y')
-			->reorder([0 => 'title', 1 => 'created_at', 2 => 'html']);
+			->reorder(['title', 'created_at', 'html']);
 	$post->addExtraColumn('comments')->link('comments', $store->get('post_comments'), 'post_id');
 
 	$icon = new Icon(Icon::TYPE_DELETE);
@@ -75,7 +75,10 @@ $store->set('post', function() use ($store, $root) {
 
 $store->set('post_comments', function() {
 	$comment = new Data('comment', null, 'div', 'comment');
-	$comment->setDataClass('comment')->hide('created_at');
+	$comment->setDataClass('comment')->hide()->show('comment');
+	$comment->addExtraComponent(new Custom(function ($input) {
+		return ' - ' . $input->getName() . ', ' . $input->getCreatedAt()->format(Data::$DefaultDateTimeFormat);
+	}, true, 'div', 'comment-author'));
 
 	$icon = new Icon(Icon::TYPE_DELETE);
 	$icon->setGroups('admin');
@@ -85,7 +88,7 @@ $store->set('post_comments', function() {
 	$icon->setGroups('admin');
 	$comment->addIcon($icon, '');
 
-	$postComment = new Data('post_comment', null, 'div', 'padding');
+	$postComment = new Data('post_comment');
 	$postComment->link('comment_id', $comment);
 	$postComments = new Group($postComment, 'div', 'comments');
 	return $postComments;

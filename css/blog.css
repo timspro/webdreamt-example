@@ -51,37 +51,15 @@ html, body {
 	color: #ddd;
 }
 
-.comment {
+.comment-comment {
+	padding: 10px 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 }
 
-.comment table {
-	width: 100%;
-}
-
-.comment-name  {
-	width: 15%;
-	text-align: center;
-	display: inline-block;
-	background-color: #eee;
-	border-radius: 5px 0 0 5px;
-	border-right: 1px solid #ddd;
-	padding: 10px 0;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-}
-
-.comment-comment {
-	position: relative;
-	left: 15%;
-	display: inline-block;
-	padding: 10px 20px;
-}
-
-.padding {
-	padding: 10px;
+.comment-author {
+	text-align: right;
+	font-size: 0.8em;
 }
 
 .post {
@@ -95,4 +73,9 @@ html, body {
 .iframe-fill {
 	width: 100%;
 	height: 100%;
+}
+
+.hljs {
+	padding: 0 !important;
+	background: 0 !important;
 }

@@ -77,7 +77,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-shell');
 
-	grunt.registerTask('autoupdate', ['watch:do']);
+	grunt.registerTask('automate', ['watch:do']);
 	grunt.registerTask('default', ['concat', 'cssmin:do']);
 	grunt.registerTask('setup', ['shell:do', 'copy:do']);
 	grunt.registerTask('optimize', ['uglify']);

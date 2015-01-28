@@ -45,7 +45,6 @@
   <table name="post_comment" idMethod="native" phpName="PostComment">
     <column name="post_id" phpName="PostId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="comment_id" phpName="CommentId" type="INTEGER" primaryKey="true" required="true"/>
-    <column name="in_database" phpName="InDatabase" type="TINYINT" required="true" defaultValue="1"/>
     <foreign-key foreignTable="post" name="post_comment_ibfk_3" onDelete="CASCADE">
       <reference local="post_id" foreign="id"/>
     </foreign-key>
