@@ -17,20 +17,20 @@ $root = Box::get()->root();
 $page = new Template();
 
 //Get the data.
-$data = null;
 if (isset($_GET['title'])) {
 	$title = str_replace('-', ' ', $_GET['title']);
-	$posts = PostQuery::create()->filterByTitle($title)->find();
-	if (count($posts) !== 0) {
-		$data = $posts[0];
-	}
+	$postQuery = PostQuery::create()->filterByTitle($title);
+} else {
+	$postQuery = PostQuery::create()->orderByCreatedAt(Criteria::DESC);
 }
 
-if (!$data) {
-	$posts = PostQuery::create()->orderByCreatedAt(Criteria::DESC)->find();
-	if (count($posts) !== 0) {
-		$data = $posts[0];
-	}
+$data = $postQuery->leftJoin('Post.PostComment')->with('PostComment')
+				->leftJoin('PostComment.Comment')->with('Comment')
+				->orderBy('Comment.CreatedAt', Criteria::DESC)->find();
+if (count($data) !== 0) {
+	$data = $data[0];
+} else {
+	$data = null;
 }
 
 $store = new Store();
@@ -77,7 +77,12 @@ $store->set('post_comments', function() {
 	$comment = new Data('comment', null, 'div', 'comment');
 	$comment->setDataClass('comment')->hide()->show('comment');
 	$comment->addExtraComponent(new Custom(function ($input) {
-		return ' - ' . $input->getName() . ', ' . $input->getCreatedAt()->format(Data::$DefaultDateTimeFormat);
+		$name = $input->getName();
+		$date = $input->getCreatedAt();
+		if ($date !== null) {
+			$date = $date->format(Data::$DefaultDateTimeFormat);
+		}
+		return " - $name, $date";
 	}, true, 'div', 'comment-author'));
 
 	$icon = new Icon(Icon::TYPE_DELETE);

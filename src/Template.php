@@ -40,11 +40,13 @@ class Template extends Page {
 
 		//Start making components.
 		//Set up the general layout of the sidebar.
-		$store->set('sidebar', function() use ($store) {
+		$store->set('sidebar', function() use ($store, $root) {
 			$sidebar = new Wrapper($store->get('tags'), 'div', 'sidebar col-md-3');
 			$sidebar->addExtraComponent($store->get('untagged_posts'));
 			$sidebar->addExtraComponent($store->get('actions'), false);
-			$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'Blog'), false);
+			$logo = new Component('img', 'logo col-md-6', "src='$root/dist/img/bismuth.png'", '');
+			$sidebar->addExtraComponent($logo, false);
+			$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'A Blog'), false);
 			return $sidebar;
 		});
 
@@ -83,7 +85,7 @@ class Template extends Page {
 			$tag->addIcon($icon, '');
 
 			$tags = new Group($tag);
-			$tags->setAfterOpeningTag('<h3>Posts</h3>');
+			$tags->setAfterOpeningTag('<h3>Sweet Content</h3>');
 			$tags->setInput($store->get('data'));
 			return $tags;
 		});
@@ -131,7 +133,7 @@ class Template extends Page {
 
 		$this->content = $content;
 		$this->sidebar = $sidebar;
-		parent::__construct($content, 'WebDreamt Blog');
+		parent::__construct($content, 'A Blog');
 	}
 
 }
