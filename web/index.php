@@ -34,15 +34,29 @@ if (count($data) !== 0) {
 }
 
 $store = new Store();
+$store->set('data', function() use ($data) {
+	return $data;
+});
 
 $store->set('form', function () use ($store) {
-	$post = new Form('post', null, "method='POST'");
-	$post->deny()->allow('id');
+	$custom = new Custom(function($input) use ($store) {
+		if (!Box::get()->sentry()->getUser()) {
+			$time = $store->get('data')->getCreatedAt()->getTimestamp();
+			if ((time() - $time) / 3600 > 24) {
+				return '';
+			}
+		}
+		$post = new Form('post', null, "method='POST'");
+		$post->deny()->allow('id');
 
-	$post->addExtraColumn('extra')->link('extra', $store->get('form_post_comment'), 'post_id');
-	$panel = new Panel($post);
-	$panel->setTitle('Leave a comment...');
-	return $panel;
+		$post->addExtraColumn('extra')->link('extra', $store->get('form_post_comment'), 'post_id');
+		$panel = new Panel($post);
+		$panel->setTitle('Leave a comment...');
+
+		return $panel->render($input);
+	});
+
+	return $custom;
 });
 
 $store->set('form_post_comment', function() {

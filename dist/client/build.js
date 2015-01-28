@@ -19900,25 +19900,26 @@ the specific language governing permissions and limitations under the Apache Lic
 			form.setAttribute('method', 'POST');
 		}
 		if (!form.hasAttribute('action')) {
-			form.setAttribute('action', '?');
+			var url = document.URL.toString();
+			form.setAttribute('action', url.split("?")[0]);
 		}
 		form.submit();
 	});
 
 	$('.wd-is-input, .wd-is-select').trigger('change');
 
-	function getParameterByName(name) {
-		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-		var results = regex.exec(location.search);
-		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-	}
+//	function getParameterByName(name) {
+//		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+//		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+//		var results = regex.exec(location.search);
+//		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+//	}
 
 	$(window).load(function (e) {
 		$('.wd-modal-show').modal('show');
-		if (getParameterByName('action') === 'delete') {
-			var url = window.location.toString();
-			window.location = url.substring(0, url.indexOf("?"));
-		}
+//		if (getParameterByName('action') === 'delete') {
+//			var url = window.location.toString();
+//			window.location = url.substring(0, url.indexOf("?"));
+//		}
 	});
 })();

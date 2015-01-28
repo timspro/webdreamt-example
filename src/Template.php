@@ -23,8 +23,6 @@ class Template extends Page {
 	public $content;
 
 	function __construct() {
-		Box::get()->server()->automate();
-
 		$root = Box::get()->root();
 
 		//Make a store to help organize things.

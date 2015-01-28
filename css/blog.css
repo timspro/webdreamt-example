@@ -5,14 +5,18 @@
 	background-color: #333;
 	min-height: 100%;
 	max-height: 100%;
-	padding: 50px;
+	padding: 10px 30px;
 	color: white;
+}
+
+.sidebar .actions {
+	margin-top: 20px;
 }
 
 .content {
 	background-color: #eee;
 	min-height: 100%;
-	padding: 50px;
+	padding: 30px 50px;
 }
 
 html > body {

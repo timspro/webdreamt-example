@@ -16,7 +16,8 @@ class PostComment extends BasePostComment {
 
 	function preInsert(ConnectionInterface $con = null) {
 		if (!Box::get()->sentry()->getUser()) {
-			if (($this->getPost()->getCreatedAt()->getTimestamp() - time()) / 3600 > 24) {
+			$time = $this->getPost()->getCreatedAt()->getTimestamp();
+			if ((time() - $time) / 3600 > 24) {
 				return false;
 			}
 		}

@@ -16,7 +16,7 @@ class PostTag extends BasePostTag {
 
 	function preInsert(ConnectionInterface $con = null) {
 		$tag = $this->getTag();
-		if ($tag === null || $tag->getName() === '') {
+		if ($tag === null) {
 			return false;
 		}
 		return parent::preInsert($con);

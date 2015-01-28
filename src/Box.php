@@ -9,6 +9,7 @@ class Box extends \WebDreamt\Box {
 		$this->DatabaseName = 'webdreamt_blog';
 		$this->DatabaseHost = 'localhost';
 		$this->enable();
+		$this->server()->automate();
 	}
 
 	function javascript() {
