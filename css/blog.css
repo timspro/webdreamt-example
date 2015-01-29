@@ -2,11 +2,12 @@
 	position: fixed;
 	left: 0;
 	top: 0;
+	bottom: 0;
 	background-color: #333;
 	min-height: 100%;
 	max-height: 100%;
-	padding: 10px 30px;
 	color: white;
+	padding: 1em;
 }
 
 .sidebar .actions {
@@ -16,7 +17,7 @@
 .content {
 	background-color: #eee;
 	min-height: 100%;
-	padding: 30px 50px;
+	padding: 1em;
 }
 
 html > body {
@@ -68,7 +69,7 @@ html, body {
 	float: none;
 	border: 1px solid white;
 	padding: 0;
-	margin: 0 auto;
+	margin: 2em auto;
 }
 
 .comment-comment {
