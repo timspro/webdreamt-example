@@ -39,10 +39,10 @@ class Template extends Page {
 		//Start making components.
 		//Set up the general layout of the sidebar.
 		$store->set('sidebar', function() use ($store, $root) {
-			$sidebar = new Wrapper($store->get('tags'), 'div', 'sidebar col-md-3');
+			$sidebar = new Wrapper($store->get('tags'), 'div', 'sidebar col-xs-3');
 			$sidebar->addExtraComponent($store->get('untagged_posts'));
 			$sidebar->addExtraComponent($store->get('actions'), false);
-			$logo = new Component('img', 'logo col-md-6', "src='$root/dist/img/bismuth.png'", '');
+			$logo = new Component('img', 'logo col-xs-6', "src='$root/dist/img/bismuth.png'", '');
 			$sidebar->addExtraComponent($logo, false);
 			$sidebar->addExtraComponent(new Component('h3', 'brand', null, 'A Blog'), false);
 			return $sidebar;
@@ -126,7 +126,7 @@ class Template extends Page {
 
 		$sidebar = $store->get('sidebar');
 
-		$content = new Wrapper(null, 'div', 'content col-md-9 col-md-offset-3');
+		$content = new Wrapper(null, 'div', 'content col-xs-9 col-xs-offset-3');
 		$this->addExtraComponent($sidebar, false);
 
 		$this->content = $content;
