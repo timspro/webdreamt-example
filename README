@@ -1,9 +1,23 @@
 This is an example of WebDreamt project.
 
-To install, just drop the project in your web root and run Composer to install the dependencies.
+To install, just drop the project in your Apache's web root and run Composer to install the dependencies.
+
+You will want to change:
+$this->DatabaseUsername = 'root';
+$this->DatabasePassword = '';
+$this->DatabaseName = 'webdreamt_blog';
+$this->DatabaseHost = 'localhost';
+in src/Box.php to your database values.
+
+You will also want to change:
+$user = $sentry->createUser([
+	'email' => 'admin@admin.com',
+	'password' => 'password',
+		]);
+in web/admin/setup.php to an email and password of your choosing.
 
 Then, navigate to localhost/webdreamt-example/admin/setup.php in your browser. This creates the first
-user and the default group and the admin group.
+user and the default group and the admin group with permissions.
 
-Now, you should able to login at localhost/webdreamt-example/login.php with email "admin@admin.com" and
-password "password" (no quotes).
+Now, you should able to login at localhost/webdreamt-example/login.php with the email and password
+you set above.

@@ -45,6 +45,11 @@ html, body {
 	margin: 15px 0;
 }
 
+.post-html img {
+	width: 100% !important;
+	height: auto !important;
+}
+
 .sidebar {
 	overflow-y: auto;
 }
