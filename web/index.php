@@ -87,7 +87,7 @@ $store->set('post', function() use ($store, $root) {
 	return $panel;
 });
 
-$store->set('post_comments', function() {
+$store->set('post_comments', function() use ($root) {
 	$comment = new Data('comment', null, 'div', 'comment');
 	$comment->setDataClass('comment')->hide()->show('comment');
 	$comment->addExtraComponent(new Custom(function ($input) {
@@ -101,7 +101,7 @@ $store->set('post_comments', function() {
 
 	$icon = new Icon(Icon::TYPE_EDIT);
 	$icon->setGroups('admin');
-	$comment->addIcon($icon, '');
+	$comment->addIcon($icon, "$root/modal.php", true);
 
 	$icon = new Icon(Icon::TYPE_DELETE);
 	$icon->setGroups('admin');
@@ -116,26 +116,5 @@ $store->set('post_comments', function() {
 $page->content->setOnNullInput('There are no posts.');
 $page->content->setDisplayComponent($store->get('post'));
 $page->content->addExtraComponent($store->get('form'));
-
-if (isset($_GET['action']) && $_GET['action'] === 'update') {
-	$editable = Data::getObjectFromUrl();
-} else {
-	$editable = null;
-}
-
-$modals = [
-	'comment' => Comment::class,
-	'tag' => Tag::class
-];
-
-foreach ($modals as $table => $class) {
-	$modal = new Modal(new Form($table));
-	$modal->setCssClassCallback(function($input) use ($class) {
-		return $input instanceof $class ? 'wd-modal-show' : '';
-	});
-	$modal->setInput($editable instanceof $class ? $editable : null);
-	$modal->setGroups('admin');
-	$page->content->addExtraComponent($modal);
-}
 
 echo $page->render($data);

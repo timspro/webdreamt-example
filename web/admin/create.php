@@ -15,6 +15,9 @@ if (!Box::get()->sentry()->getUser()) {
 }
 
 $data = Data::getObjectFromUrl();
+if (!($data instanceof Post)) {
+	$data = null;
+}
 
 $store = new Store();
 

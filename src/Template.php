@@ -5,7 +5,9 @@ use WebDreamt\Component\Custom;
 use WebDreamt\Component\Icon;
 use WebDreamt\Component\Wrapper;
 use WebDreamt\Component\Wrapper\Data;
+use WebDreamt\Component\Wrapper\Data\Form;
 use WebDreamt\Component\Wrapper\Group;
+use WebDreamt\Component\Wrapper\Modal;
 use WebDreamt\Component\Wrapper\Page;
 use WebDreamt\Store;
 
@@ -69,14 +71,14 @@ class Template extends Page {
 		});
 
 		//Set up the list of tags.
-		$store->set('tags', function() use ($store) {
+		$store->set('tags', function() use ($root, $store) {
 			$tag = new Data('tag');
 			$tag->setDataClass('tag');
 			$tag->addExtraColumn('extra')->link('extra', new Group($store->get('post_tag')), 'tag_id');
 
 			$icon = new Icon(Icon::TYPE_EDIT);
 			$icon->setGroups('admin');
-			$tag->addIcon($icon, '');
+			$tag->addIcon($icon, "$root/modal.php", true);
 
 			$icon = new Icon(Icon::TYPE_DELETE);
 			$icon->setGroups('admin');
@@ -125,12 +127,12 @@ class Template extends Page {
 		});
 
 		$sidebar = $store->get('sidebar');
-
 		$content = new Wrapper(null, 'div', 'content col-xs-9 col-xs-offset-3');
 		$this->addExtraComponent($sidebar, false);
 
 		$this->content = $content;
 		$this->sidebar = $sidebar;
+
 		parent::__construct($content, 'A Blog');
 	}
 
