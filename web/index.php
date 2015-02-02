@@ -76,7 +76,7 @@ $store->set('post', function() use ($store, $root) {
 
 	$icon = new Icon(Icon::TYPE_EDIT);
 	$icon->setGroups('admin');
-	$post->addIcon($icon, "$root/admin/create.php");
+	$post->addIcon($icon, "$root/admin/create.php", Data::LINK_NORMAL);
 
 	$icon = new Icon(Icon::TYPE_DELETE);
 	$icon->setGroups('admin');
@@ -101,7 +101,7 @@ $store->set('post_comments', function() use ($root) {
 
 	$icon = new Icon(Icon::TYPE_EDIT);
 	$icon->setGroups('admin');
-	$comment->addIcon($icon, "$root/modal.php", true);
+	$comment->addIcon($icon, "$root/modal.php", Data::LINK_RETURNS);
 
 	$icon = new Icon(Icon::TYPE_DELETE);
 	$icon->setGroups('admin');

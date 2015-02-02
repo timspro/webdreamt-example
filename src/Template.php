@@ -78,7 +78,7 @@ class Template extends Page {
 
 			$icon = new Icon(Icon::TYPE_EDIT);
 			$icon->setGroups('admin');
-			$tag->addIcon($icon, "$root/modal.php", true);
+			$tag->addIcon($icon, "$root/modal.php", Data::LINK_RETURNS);
 
 			$icon = new Icon(Icon::TYPE_DELETE);
 			$icon->setGroups('admin');

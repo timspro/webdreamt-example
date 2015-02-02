@@ -25,7 +25,7 @@ $store->set('edit_post_tags', function() use ($store) {
 	$tag = new Form('tag');
 	$tag->denyLabels();
 	$postTag = new Form('post_tag');
-	$postTag->link('tag_id', $tag)->addIcon(new Icon(Icon::TYPE_DELETE), '', true);
+	$postTag->link('tag_id', $tag)->addIcon(new Icon(Icon::TYPE_DELETE), '');
 	$postTags = new Group($postTag);
 	return $postTags;
 });
