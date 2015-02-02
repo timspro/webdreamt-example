@@ -1,9 +1,11 @@
 <?php
+use WebDreamt\Component\Icon;
 use WebDreamt\Component\Wrapper\Data;
 use WebDreamt\Component\Wrapper\Data\Form;
 use WebDreamt\Component\Wrapper\Data\Form\InputSelect;
 use WebDreamt\Component\Wrapper\Group;
 use WebDreamt\Component\Wrapper\Panel;
+use WebDreamt\Store;
 
 require_once __DIR__ . '/../../bootstrap.php';
 
@@ -14,23 +16,32 @@ if (!Box::get()->sentry()->getUser()) {
 
 $data = Data::getObjectFromUrl();
 
-//Create the tags for the post.
-$names = Box::get()->db()->query('SELECT id, name FROM tag')->fetchAll(PDO::FETCH_KEY_PAIR);
-$tag = new InputSelect('tag', 'name', $names);
-$tag->setLabelable(false);
-$postTag = new Form('post_tag');
-$postTag->link('tag_id', $tag);
-$postTags = new Group($postTag);
+$store = new Store();
 
-$multiplePostTag = clone $postTag;
-$multiplePostTag->setMultiple(true)->setInput([]);
+$store->set('edit_post_tags', function() use ($store) {
+	$tag = new Form('tag');
+	$tag->denyLabels();
+	$postTag = new Form('post_tag');
+	$postTag->link('tag_id', $tag)->addIcon(new Icon(Icon::TYPE_DELETE), '', true);
+	$postTags = new Group($postTag);
+	return $postTags;
+});
+
+$store->set('create_post_tag', function() use ($store) {
+	$names = Box::get()->db()->query('SELECT id, name FROM tag')->fetchAll(PDO::FETCH_KEY_PAIR);
+	$tag = new InputSelect('tag', 'name', $names);
+	$postTag = new Form('post_tag');
+	$postTag->link('tag_id', $tag);
+	$postTag->setMultiple(true);
+	return $postTag;
+});
 
 //Create the post.
-$post = new Form('post', null, 'method="POST"');
-$postTags->addExtraComponent($post->getLabelComponent(), false);
+$post = new Form('post');
 $post->setLabels(['html' => 'Content'])->setHtmlClass(['html' => 'ckeditor']);
-$post->deny('users_id')->addExtraColumn('tags')->link('tags', $postTags, 'post_id');
-$post->addExtraColumn('add_tag')->link('add_tag', $multiplePostTag, 'post_id');
+$post->deny('users_id')->addExtraColumn('tags')->link('tags', $store->get('edit_post_tags'), 'post_id');
+$post->addExtraColumn('add_tag')->link('add_tag', $store->get('create_post_tag'), 'post_id')
+		->denyLabels('add_tag');
 
 $panel = new Panel($post);
 $panel->setTitle('New Post');

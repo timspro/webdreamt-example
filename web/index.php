@@ -42,14 +42,14 @@ $store->set('form', function () use ($store) {
 	$custom = new Custom(function($input) use ($store) {
 		if (!Box::get()->sentry()->getUser()) {
 			$time = $store->get('data')->getCreatedAt()->getTimestamp();
-			if ((time() - $time) / 3600 > 24) {
+			if ((time() - $time) / 3600 > 24 * 21) {
 				return '';
 			}
 		}
-		$post = new Form('post', null, "method='POST'");
+		$post = new Form('post');
 		$post->deny()->allow('id');
-
-		$post->addExtraColumn('extra')->link('extra', $store->get('form_post_comment'), 'post_id');
+		$post->addExtraColumn('extra')->link('extra', $store->get('form_post_comment'), 'post_id')
+				->denyLabels('extra');
 		$panel = new Panel($post);
 		$panel->setTitle('Leave a comment...');
 
@@ -74,13 +74,13 @@ $store->set('post', function() use ($store, $root) {
 			->reorder(['title', 'created_at', 'html']);
 	$post->addExtraColumn('comments')->link('comments', $store->get('post_comments'), 'post_id');
 
-	$icon = new Icon(Icon::TYPE_DELETE);
-	$icon->setGroups('admin');
-	$post->addIcon($icon, '');
-
 	$icon = new Icon(Icon::TYPE_EDIT);
 	$icon->setGroups('admin');
 	$post->addIcon($icon, "$root/admin/create.php");
+
+	$icon = new Icon(Icon::TYPE_DELETE);
+	$icon->setGroups('admin');
+	$post->addIcon($icon, '');
 
 	$panel = new Panel($post);
 	$panel->setTitle(null);
@@ -99,11 +99,11 @@ $store->set('post_comments', function() {
 		return " - $name, $date";
 	}, true, 'div', 'comment-author'));
 
-	$icon = new Icon(Icon::TYPE_DELETE);
+	$icon = new Icon(Icon::TYPE_EDIT);
 	$icon->setGroups('admin');
 	$comment->addIcon($icon, '');
 
-	$icon = new Icon(Icon::TYPE_EDIT);
+	$icon = new Icon(Icon::TYPE_DELETE);
 	$icon->setGroups('admin');
 	$comment->addIcon($icon, '');
 

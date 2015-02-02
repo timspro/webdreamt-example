@@ -74,11 +74,11 @@ class Template extends Page {
 			$tag->setDataClass('tag');
 			$tag->addExtraColumn('extra')->link('extra', new Group($store->get('post_tag')), 'tag_id');
 
-			$icon = new Icon(Icon::TYPE_DELETE);
+			$icon = new Icon(Icon::TYPE_EDIT);
 			$icon->setGroups('admin');
 			$tag->addIcon($icon, '');
 
-			$icon = new Icon(Icon::TYPE_EDIT);
+			$icon = new Icon(Icon::TYPE_DELETE);
 			$icon->setGroups('admin');
 			$tag->addIcon($icon, '');
 
@@ -120,7 +120,7 @@ class Template extends Page {
 					return 'Unknown';
 				}
 				return '';
-			}, true), false);
+			}, true, 'div', 'tag-name'), false);
 			return $group;
 		});
 
