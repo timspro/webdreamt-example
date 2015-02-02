@@ -19857,13 +19857,31 @@ the specific language governing permissions and limitations under the Apache Lic
 		});
 	}
 
+	var oldForms = {};
+	$(document).on('click', '.wd-remove-icon', function (e) {
+		var $target = $(e.target);
+		if (!$target.parent().is('a')) {
+			var $removable = $target.parent().parent();
+			var formId = $removable.attr('wd-another');
+			if (typeof formId !== 'undefined') {
+				oldForms[formId] = $removable;
+			}
+			$removable.remove();
+		}
+	});
+
 	$(document).on('click', '.wd-multiple', function (e) {
 		var $target = $(e.target);
-		var $form = $target.parent();
-		var $newForm = $form.clone(true);
-		$newForm.insertAfter($form);
+		var formId = $target.attr('wd-another');
+		var $form = $('.wd-form[wd-another="' + formId + '"]').last();
+		if ($form.length === 0) {
+			var $newForm = oldForms[formId];
+			delete oldForms[formId];
+		} else {
+			var $newForm = $form.clone(true);
+		}
+		$newForm.insertBefore($target);
 		fixForm($newForm, {});
-		$target.remove();
 	});
 
 	$(document).on('click', '.wd-form-submit', function (e) {
@@ -19899,10 +19917,10 @@ the specific language governing permissions and limitations under the Apache Lic
 		if (!form.hasAttribute('method')) {
 			form.setAttribute('method', 'POST');
 		}
-//		if (!form.hasAttribute('action')) {
-//			var url = document.URL.toString();
-//			form.setAttribute('action', url);
-//		}
+		//		if (!form.hasAttribute('action')) {
+		//			var url = document.URL.toString();
+		//			form.setAttribute('action', url);
+		//		}
 		form.submit();
 	});
 

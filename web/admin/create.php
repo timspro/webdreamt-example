@@ -34,8 +34,7 @@ $store->set('create_post_tag', function() use ($store) {
 	$names = Box::get()->db()->query('SELECT id, name FROM tag')->fetchAll(PDO::FETCH_KEY_PAIR);
 	$tag = new InputSelect('tag', 'name', $names);
 	$postTag = new Form('post_tag');
-	$postTag->link('tag_id', $tag);
-	$postTag->setMultiple(true);
+	$postTag->link('tag_id', $tag)->multiple();
 	return $postTag;
 });
 
