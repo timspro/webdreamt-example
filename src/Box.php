@@ -9,6 +9,7 @@ class Box extends \WebDreamt\Box {
 		$this->DatabaseName = 'webdreamt_blog';
 		$this->DatabaseHost = 'localhost';
 		$this->enable();
+		$this->csrfToken();
 		$this->server()->automate();
 	}
 

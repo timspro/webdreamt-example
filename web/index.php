@@ -113,7 +113,7 @@ $store->set('post_comments', function() use ($root) {
 	return $postComments;
 });
 
-$page->content->setOnNullInput('There are no posts.');
+$page->content->setOnNullInput('There is no post with that title.');
 $page->content->setDisplayComponent($store->get('post'));
 $page->content->addExtraComponent($store->get('form'));
 
