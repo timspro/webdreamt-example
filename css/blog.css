@@ -10,6 +10,16 @@
 	padding: 1em;
 }
 
+@media screen and (max-width: 600px) {
+	.sidebar {
+		display: none !important;	
+	}
+	.content {
+		width: 100% !important;
+		margin-left: 0 !important;
+	}
+}
+
 .sidebar .actions {
 	margin-top: 20px;
 }
